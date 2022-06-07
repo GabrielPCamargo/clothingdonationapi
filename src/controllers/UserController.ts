@@ -3,6 +3,7 @@ import { Request, Response } from 'express';
 
 type UserControllerProps = {
   store: (req: Request, res: Response) => Promise<Response>;
+  show: (req: Request, res: Response) => Promise<Response>;
 };
 
 class UserController implements UserControllerProps {
@@ -16,6 +17,15 @@ class UserController implements UserControllerProps {
       });
     }
 
+    return res.json(user.getData());
+  }
+
+  async show(req: Request, res: Response) {
+    const user = new User(req.body);
+    await user.login();
+    if (user.errors.length > 0) {
+      return res.status(400).json({ errors: user.errors });
+    }
     return res.json(user.getData());
   }
 }

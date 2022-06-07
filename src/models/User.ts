@@ -1,8 +1,14 @@
-import mongoose, { MongooseError } from 'mongoose';
-import { Schema } from 'mongoose';
+import mongoose, { Schema } from 'mongoose';
 import bcrypt from 'bcrypt';
 import isEmail from 'validator/lib/isEmail';
+import jwt from 'jsonwebtoken';
 
+export type UserData = {
+  name: string;
+  email: string;
+  type: string;
+  token: string;
+};
 interface UserType {
   name: string;
   email: string;
@@ -28,7 +34,7 @@ const userSchema = new Schema<UserType>({
   type: String,
 });
 
-userSchema.pre('save', function (next) {
+userSchema.pre<UserType>('save', function (next) {
   const hashedPassword = bcrypt.hashSync(this.password, 8);
   this.password = hashedPassword;
   next();
@@ -39,16 +45,14 @@ const UserModel = mongoose.model<UserType>('User', userSchema);
 interface UserClass {
   create: () => Promise<UserType | undefined>;
   validate: () => boolean;
-  getData: () => {
-    name: string;
-    email: string;
-    type: string;
-  };
+  getData: () => UserData;
+  login: () => void;
 }
 
 export class User implements UserClass {
   public readonly errors: string[] = [];
   private data: UserType = {} as UserType;
+  private token = '';
   constructor(private readonly body: UserType) {}
 
   async create() {
@@ -58,7 +62,8 @@ export class User implements UserClass {
       const data = new UserModel(this.body);
       await data.save();
       this.data = data;
-      return this.data;
+      await this.login();
+      return;
     } catch (error: any) {
       if (error.code == 11000) {
         this.errors.push('E-mail já utilizado');
@@ -95,8 +100,43 @@ export class User implements UserClass {
       name: this.data.name,
       email: this.data.email,
       type: this.data.type,
+      token: this.token,
     };
 
     return data;
+  }
+
+  async login() {
+    if (!this.body.email) return;
+    const data = await UserModel.findOne({
+      email: this.body.email,
+    });
+
+    if (data === null) {
+      this.errors.push('User not found');
+      return;
+    }
+
+    this.data = data;
+
+    if (!bcrypt.compareSync(this.body.password, this.data.password)) {
+      this.errors.push('Invalid password');
+      return;
+    }
+
+    const token = jwt.sign(
+      {
+        name: this.data.name,
+        email: this.data.email,
+        type: this.data.type,
+      },
+      process.env.TOKEN_KEY as string,
+      {
+        expiresIn: process.env.TOKEN_EXPIRES_IN,
+      }
+    );
+
+    this.token = token;
+    return;
   }
 }
