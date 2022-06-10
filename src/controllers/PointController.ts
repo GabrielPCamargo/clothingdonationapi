@@ -7,6 +7,7 @@ type PointControllerProps = {
   store: (req: Request, res: Response) => Promise<Response>;
   show: (req: Request, res: Response) => Promise<Response>;
   update: (req: Request, res: Response) => Promise<Response>;
+  delete: (req: Request, res: Response) => Promise<Response>;
 };
 
 class PointController implements PointControllerProps {
@@ -47,6 +48,19 @@ class PointController implements PointControllerProps {
     }
 
     return res.json(updatedPoint);
+  }
+
+  async delete(req: Request, res: Response) {
+    const point = new Point({ ...req.body, id: req.params.id });
+    const updatedPoint = await point.delete();
+
+    if (point.errors.length > 0) {
+      return res.status(400).json({
+        errors: point.errors,
+      });
+    }
+
+    return res.json({ deleted: updatedPoint });
   }
 }
 

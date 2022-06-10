@@ -37,6 +37,7 @@ const PointModel = mongoose.model<PointType>('Point', pointSchema);
 interface PointClass {
   create: () => Promise<PointType | undefined>;
   update: () => Promise<PointType | undefined>;
+  delete: () => Promise<boolean>;
   validate: () => boolean;
 }
 export class Point implements PointClass {
@@ -102,6 +103,25 @@ export class Point implements PointClass {
     } catch (err) {
       console.log(err);
       return;
+    }
+  }
+
+  async delete() {
+    if (!isValidObjectId(this.body.id)) {
+      this.errors.push('Id inválido');
+      return false;
+    }
+
+    try {
+      const deletedPoint = await PointModel.deleteOne({ id: this.body.id });
+      if (!(deletedPoint.deletedCount > 1)) {
+        this.errors.push('Error deleting point');
+        return false;
+      }
+      return true;
+    } catch (err) {
+      console.log(err);
+      return false;
     }
   }
 
