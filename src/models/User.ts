@@ -9,6 +9,7 @@ export type UserData = {
   type: string;
   token: string;
 };
+
 interface UserType {
   name: string;
   email: string;
