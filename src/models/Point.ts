@@ -2,6 +2,7 @@ import mongoose from 'mongoose';
 import { Schema, isValidObjectId } from 'mongoose';
 
 export interface PointType {
+  id: string;
   name: string;
   description: string;
   coordinates: {
@@ -35,6 +36,7 @@ const PointModel = mongoose.model<PointType>('Point', pointSchema);
 
 interface PointClass {
   create: () => Promise<PointType | undefined>;
+  update: () => Promise<PointType | undefined>;
   validate: () => boolean;
 }
 export class Point implements PointClass {
@@ -74,6 +76,29 @@ export class Point implements PointClass {
     try {
       const point = await PointModel.findById(id);
       return point;
+    } catch (err) {
+      console.log(err);
+      return;
+    }
+  }
+
+  async update() {
+    if (!this.validate()) return;
+    if (!isValidObjectId(this.body.id)) {
+      this.errors.push('Id inválido');
+      return;
+    }
+
+    try {
+      await PointModel.updateOne({ id: this.body.id }, this.body);
+
+      const updatedPoint = await PointModel.findById<PointType>(this.body.id);
+      if (!updatedPoint) {
+        this.errors.push('User not found');
+        return;
+      }
+
+      return updatedPoint;
     } catch (err) {
       console.log(err);
       return;
