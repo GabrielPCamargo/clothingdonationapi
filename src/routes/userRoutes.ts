@@ -1,9 +1,10 @@
 import { Router } from 'express';
-import UserController from '../controllers/UserController';
+import { createUserController } from '../useCases/CreateUser';
+import { loginUserController } from '../useCases/LoginUser';
 
 const route = Router();
 
-route.post('/register', UserController.store);
-route.post('/login', UserController.show);
+route.post('/register', (req, res) => createUserController.handle(req, res));
+route.post('/login', (req, res) => loginUserController.handle(req, res));
 
 export default route;
