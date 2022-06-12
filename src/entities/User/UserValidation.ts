@@ -30,7 +30,7 @@ export class UserValidation implements IUser {
     }
 
     if (this.errors.length > 0) {
-      throw { name: 'Error', message: this.errors.join('\n') };
+      throw { name: 'Error', message: this.errors };
     }
 
     return true;

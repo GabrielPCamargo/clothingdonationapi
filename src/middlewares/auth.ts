@@ -1,6 +1,6 @@
 import jwt from 'jsonwebtoken';
-import { UserData } from '../models/User';
 import { Request, Response, NextFunction } from 'express';
+import { IUser } from '../entities/User/IUser';
 
 export interface jwtPayload {
   name: string;
@@ -9,7 +9,7 @@ export interface jwtPayload {
 }
 
 export interface CustomRequest extends Request {
-  user?: UserData;
+  user?: IUser;
 }
 
 export const auth = (req: CustomRequest, res: Response, next: NextFunction) => {
@@ -22,11 +22,11 @@ export const auth = (req: CustomRequest, res: Response, next: NextFunction) => {
   const decoded = jwt.verify(token, process.env.TOKEN_KEY as string);
 
   if (!decoded) {
-    res.status(400).json({ error: 'Not authorized' });
+    res.status(401).json({ error: 'Not authorized' });
     return;
   }
 
-  req.user = decoded as UserData;
+  req.user = decoded as IUser;
 
   next();
 };
