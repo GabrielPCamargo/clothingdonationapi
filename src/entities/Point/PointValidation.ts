@@ -11,6 +11,7 @@ export class PointValidation implements IPoint {
     number: number;
   };
   public type: string;
+  public number: string;
   private errors: string[] = [];
   private types: string[] = ['institution', 'request', 'donation'];
 
@@ -21,7 +22,7 @@ export class PointValidation implements IPoint {
   validate() {
     if (Object.values(this).includes(undefined)) {
       throw new Error(
-        'Point requires a name, description, coordinates, user and a type'
+        'Point requires a name, description, coordinates, user, number and a type'
       );
     }
 

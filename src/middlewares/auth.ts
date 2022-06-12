@@ -1,18 +1,9 @@
 import jwt from 'jsonwebtoken';
-import { Request, Response, NextFunction } from 'express';
+import { Response, NextFunction } from 'express';
 import { IUser } from '../entities/User/IUser';
+import { AuthRequest } from './IAuthRequest';
 
-export interface jwtPayload {
-  name: string;
-  email: string;
-  type: string;
-}
-
-export interface CustomRequest extends Request {
-  user?: IUser;
-}
-
-export const auth = (req: CustomRequest, res: Response, next: NextFunction) => {
+export const auth = (req: AuthRequest, res: Response, next: NextFunction) => {
   const authorization = req.headers.authorization;
   if (!authorization) {
     res.status(400).json({ error: 'Invalid authorization' });

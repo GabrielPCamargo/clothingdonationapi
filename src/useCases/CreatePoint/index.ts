@@ -1,8 +1,8 @@
-import { IndexPointsController } from './IndexPointsController';
+import { CreatePointController } from './CreatePointController';
 import { mongoosePointsRepository } from '../../repositories/implementations/MongoosePointsRepository';
-import { IndexPointsUseCase } from './IndexPointsUseCase';
+import { CreatePointUseCase } from './CreatePointUseCase';
 
-const indexPointsUseCase = new IndexPointsUseCase(mongoosePointsRepository);
-const indexPointsController = new IndexPointsController(indexPointsUseCase);
+const createPointUseCase = new CreatePointUseCase(mongoosePointsRepository);
+const createPointController = new CreatePointController(createPointUseCase);
 
-export { indexPointsController };
+export { createPointController };

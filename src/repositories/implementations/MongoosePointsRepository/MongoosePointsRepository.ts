@@ -10,6 +10,7 @@ export class MongoosePointsRepository implements IPointsRepository {
   }
 
   async create(point: IPoint): Promise<IPoint> {
-    throw new Error('Method not implemented.');
+    const createdPoint = await this.PointModel.create(point);
+    return createdPoint;
   }
 }

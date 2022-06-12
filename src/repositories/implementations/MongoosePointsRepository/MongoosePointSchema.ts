@@ -11,9 +11,9 @@ const pointSchema = new Schema<IPoint>({
   user: {
     name: String,
     email: String,
-    number: Number,
   },
   type: String,
+  number: String,
 });
 
 export const PointModel = mongoose.model<IPoint>('Point', pointSchema);

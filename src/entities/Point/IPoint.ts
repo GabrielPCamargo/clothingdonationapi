@@ -9,7 +9,7 @@ export interface IPoint {
   user: {
     name: string;
     email: string;
-    number: number;
   };
   type: string;
+  number: string;
 }

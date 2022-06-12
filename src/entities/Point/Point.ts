@@ -9,9 +9,9 @@ export class Point implements IPoint {
   public user: {
     name: string;
     email: string;
-    number: number;
   };
   public type: string;
+  public number: string;
 
   constructor(props: Omit<Point, '_id'>) {
     Object.assign(this, props);
