@@ -5,4 +5,5 @@ export interface IPointsRepository {
   create(point: IPoint): Promise<IPoint>;
   edit(point: IPoint, data: IPoint): Promise<void>;
   findById(id: string): Promise<IPoint>;
+  delete(id: string): Promise<void>;
 }

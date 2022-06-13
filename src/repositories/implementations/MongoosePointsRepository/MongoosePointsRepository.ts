@@ -26,4 +26,8 @@ export class MongoosePointsRepository implements IPointsRepository {
     }
     return point;
   }
+
+  async delete(id: string): Promise<void> {
+    await this.PointModel.deleteOne({ _id: id });
+  }
 }

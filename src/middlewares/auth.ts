@@ -9,7 +9,14 @@ export const auth = (req: AuthRequest, res: Response, next: NextFunction) => {
     res.status(400).json({ error: 'Invalid authorization' });
     return;
   }
+
   const token = authorization.split(' ')[1];
+
+  if (!token) {
+    res.status(400).json({ error: 'Invalid authorization' });
+    return;
+  }
+
   const decoded = jwt.verify(token, process.env.TOKEN_KEY as string);
 
   if (!decoded) {
