@@ -13,8 +13,7 @@ export const auth = (req: AuthRequest, res: Response, next: NextFunction) => {
   const decoded = jwt.verify(token, process.env.TOKEN_KEY as string);
 
   if (!decoded) {
-    res.status(401).json({ error: 'Not authorized' });
-    return;
+    return res.status(401).json({ error: 'Not authorized' });
   }
 
   req.user = decoded as IUser;

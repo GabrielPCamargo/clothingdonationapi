@@ -1,4 +1,4 @@
-export interface IPoint {
+export interface IEditPointDTO {
   _id?: string;
   name: string;
   description: string;

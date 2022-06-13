@@ -13,4 +13,17 @@ export class MongoosePointsRepository implements IPointsRepository {
     const createdPoint = await this.PointModel.create(point);
     return createdPoint;
   }
+
+  async edit(point: IPoint, data: IPoint): Promise<void> {
+    const editedPoint = await this.PointModel.updateOne(point, data);
+  }
+
+  async findById(id: string): Promise<IPoint> {
+    const point = await this.PointModel.findById<IPoint>(id);
+
+    if (!point) {
+      throw new Error('Point not found');
+    }
+    return point;
+  }
 }
