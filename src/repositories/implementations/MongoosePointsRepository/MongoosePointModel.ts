@@ -2,6 +2,7 @@ import mongoose, { Schema } from 'mongoose';
 import { IPoint } from '../../../entities/Point/IPoint';
 
 const pointSchema = new Schema<IPoint>({
+  _id: String,
   name: String,
   description: String,
   coordinates: {

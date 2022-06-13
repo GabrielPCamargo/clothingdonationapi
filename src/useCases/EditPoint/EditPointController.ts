@@ -1,4 +1,5 @@
 import { Response } from 'express';
+import { validate as uuidValidate } from 'uuid';
 import { IUser } from '../../entities/User/IUser';
 import { AuthRequest } from '../../middlewares/IAuthRequest';
 import { EditPointUseCase } from './EditPointUseCase';
@@ -10,6 +11,10 @@ export class EditPointController {
     const { name, description, coordinates, type, number } = req.body;
     const user = req.user as Omit<IUser, 'password'>;
     const id = req.params.id;
+
+    if (!uuidValidate(id)) {
+      return res.status(400).json({ error: 'Invalid ID' });
+    }
     try {
       const editdPoint = await this.editPointUseCase.execute(
         {

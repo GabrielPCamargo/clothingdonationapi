@@ -1,4 +1,5 @@
 import { Request, Response } from 'express';
+import { validate as uuidValidate, v4 } from 'uuid';
 import { ShowPointUseCase } from './ShowPointUseCase';
 
 export class ShowPointController {
@@ -6,6 +7,10 @@ export class ShowPointController {
 
   async handle(req: Request, res: Response): Promise<Response> {
     const id = req.params.id;
+
+    if (!uuidValidate(id)) {
+      return res.status(400).json({ error: 'Invalid ID' });
+    }
 
     try {
       const points = await this.showPointUseCase.execute(id);

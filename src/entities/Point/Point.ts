@@ -1,5 +1,5 @@
 import { IPoint } from './IPoint';
-import { uuid } from 'uuidv4';
+import { v4 as uuid } from 'uuid';
 
 export class Point implements IPoint {
   public readonly _id: string;
