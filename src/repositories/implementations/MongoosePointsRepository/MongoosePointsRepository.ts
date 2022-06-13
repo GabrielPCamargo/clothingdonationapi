@@ -15,7 +15,7 @@ export class MongoosePointsRepository implements IPointsRepository {
   }
 
   async edit(point: IPoint, data: IPoint): Promise<void> {
-    const editedPoint = await this.PointModel.updateOne(point, data);
+    await this.PointModel.updateOne(point, data);
   }
 
   async findById(id: string): Promise<IPoint> {
