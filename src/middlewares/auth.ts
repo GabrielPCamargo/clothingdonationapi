@@ -12,18 +12,14 @@ export const auth = (req: AuthRequest, res: Response, next: NextFunction) => {
 
   const token = authorization.split(' ')[1];
 
-  if (!token) {
-    res.status(400).json({ error: 'Invalid authorization' });
-    return;
+  try {
+    const decoded = jwt.verify(token, process.env.TOKEN_KEY as string);
+    if (!decoded) {
+      return res.status(401).json({ error: 'Not authorized' });
+    }
+    req.user = decoded as IUser;
+    next();
+  } catch (err) {
+    return res.status(400).json({ error: 'Invalid authorization' });
   }
-
-  const decoded = jwt.verify(token, process.env.TOKEN_KEY as string);
-
-  if (!decoded) {
-    return res.status(401).json({ error: 'Not authorized' });
-  }
-
-  req.user = decoded as IUser;
-
-  next();
 };
