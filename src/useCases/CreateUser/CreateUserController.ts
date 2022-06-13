@@ -16,6 +16,7 @@ export class CreateUserContoller {
       });
 
       return res.status(201).json(createdUser);
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (err: any) {
       if (err.code === 11000) {
         err.message = 'E-mail já cadastrado';

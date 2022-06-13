@@ -24,6 +24,7 @@ export class EditPointController {
         id
       );
       return res.json(editdPoint);
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (err: any) {
       return res.status(400).json({
         error: err.message,

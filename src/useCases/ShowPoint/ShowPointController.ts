@@ -10,6 +10,7 @@ export class ShowPointController {
     try {
       const points = await this.showPointUseCase.execute(id);
       return res.json(points);
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (err: any) {
       return res.status(400).json({
         error: err.message,

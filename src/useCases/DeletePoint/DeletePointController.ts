@@ -10,6 +10,7 @@ export class DeletePointController {
     try {
       await this.deletePointUseCase.execute(id);
       return res.json({ deleted: true });
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (err: any) {
       return res.status(400).json({
         error: err.message,
