@@ -2,7 +2,7 @@ import { Router } from 'express';
 import { auth } from '../middlewares/auth';
 import { createPointController } from '../useCases/CreatePoint';
 import { deletePointController } from '../useCases/DeletePoint';
-import { editPointController } from '../useCases/EditPoint.ts';
+import { editPointController } from '../useCases/EditPoint';
 import { indexPointsController } from '../useCases/IndexPoints';
 import { showPointController } from '../useCases/ShowPoint';
 
