@@ -15,11 +15,8 @@ export class PointValidation implements IPoint {
   private errors: string[] = [];
   private types: string[] = ['institution', 'request', 'donation'];
 
-  constructor(props: IPoint) {
+  validate(props: IPoint) {
     Object.assign(this, props);
-  }
-
-  validate() {
     if (Object.values(this).includes(undefined)) {
       throw new Error(
         'Point requires a name, description, coordinates, user, number and a type'
@@ -38,7 +35,7 @@ export class PointValidation implements IPoint {
       this.errors.push('Coordinates is required');
     }
 
-    if (!(Object.keys(this.user).length >= 3)) {
+    if (!(Object.keys(this.user).length >= 2)) {
       this.errors.push('User is required');
     }
 

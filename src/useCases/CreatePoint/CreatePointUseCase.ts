@@ -4,11 +4,13 @@ import { PointValidation } from '../../entities/Point/PointValidation';
 import { IPointsRepository } from '../../repositories/IPointsRepository';
 
 export class CreatePointUseCase {
-  constructor(private pointsRepository: IPointsRepository) {}
+  constructor(
+    private pointsRepository: IPointsRepository,
+    private pointValidation: PointValidation
+  ) {}
 
   async execute(data: IPoint) {
-    const validation = new PointValidation(data);
-    validation.validate();
+    this.pointValidation.validate(data);
     const point = new Point(data);
     await this.pointsRepository.create(point);
     return point;

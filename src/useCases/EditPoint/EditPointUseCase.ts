@@ -3,11 +3,13 @@ import { IPointsRepository } from '../../repositories/IPointsRepository';
 import { IEditPointDTO } from './EditPointDTO';
 
 export class EditPointUseCase {
-  constructor(private pointsRepository: IPointsRepository) {}
+  constructor(
+    private pointsRepository: IPointsRepository,
+    private pointValidation: PointValidation
+  ) {}
 
   async execute(data: IEditPointDTO, id: string) {
-    const validation = new PointValidation(data);
-    validation.validate();
+    this.pointValidation.validate(data);
     const point = await this.pointsRepository.findById(id);
     await this.pointsRepository.edit(point, data);
     const editedPoint = await this.pointsRepository.findById(id);
