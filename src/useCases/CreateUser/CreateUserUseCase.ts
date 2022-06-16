@@ -5,11 +5,13 @@ import { IUsersRepository } from '../../repositories/IUsersRepository';
 import { ICreateUserRequestDTO } from './CreateUserDTO';
 
 export class CreateUserUseCase {
-  constructor(private readonly usersRepository: IUsersRepository) {}
+  constructor(
+    private readonly usersRepository: IUsersRepository,
+    private readonly userValidation: UserValidation
+  ) {}
 
   async execute(data: ICreateUserRequestDTO): Promise<IUser> {
-    const validation = new UserValidation(data);
-    validation.validate();
+    this.userValidation.validate(data);
     const user = new User(data);
     const newUser = await this.usersRepository.create(user);
     return newUser;

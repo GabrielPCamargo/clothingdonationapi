@@ -8,11 +8,9 @@ export class UserValidation implements IUser {
   public type: string;
   private errors: string[] = [];
 
-  constructor(props: IUser) {
+  validate(props: IUser) {
     Object.assign(this, props);
-  }
 
-  validate() {
     if (Object.values(this).includes(undefined)) {
       throw new Error('User requires name, email, password and type');
     }

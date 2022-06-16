@@ -34,12 +34,4 @@ export class LoginUserUseCase {
       token,
     };
   }
-
-  /*if (user.errors.length > 0) {
-      verificação
-      return res.status(400).json({
-        errors: user.errors,
-      });
-    }
-    user.getData()*/
 }
