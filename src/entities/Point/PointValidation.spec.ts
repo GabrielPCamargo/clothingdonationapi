@@ -73,6 +73,34 @@ describe('PointValidation', () => {
     expect(() => pointValidation.validate(data)).not.toThrow();
   });
 
+  it('should not validate donation with property undefined', () => {
+    const data = {
+      name: undefined,
+      description: 'testset',
+      coordinates: {
+        lat: 1,
+        lng: 4,
+      },
+      user: {
+        name: 'tste',
+        email: 'email@gmail.com',
+      },
+      type: 'donation',
+      number: '5209250920',
+    } as unknown as IPoint;
+
+    let isValid;
+    try {
+      isValid = pointValidation.validate(data);
+    } catch (err: any) {
+      expect(err.message).toContain(
+        'Point requires a name, description, coordinates, user, number and a type'
+      );
+    }
+
+    expect(isValid).toBe(undefined);
+  });
+
   it('should not validate name and description less than 4', () => {
     const data = {
       name: 'tes',
