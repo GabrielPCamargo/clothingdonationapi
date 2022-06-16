@@ -39,13 +39,6 @@ class ValidationMock extends PointValidation {
   }
 }
 
-function createSut() {
-  const pointsRepositoryMock = new PointsRepository();
-  const validationMock = new ValidationMock();
-  const sut = new CreatePointUseCase(pointsRepositoryMock, validationMock);
-  return { sut, pointsRepositoryMock, validationMock };
-}
-
 describe('CreatePointUseCase', () => {
   let pointsRepositoryMock: PointsRepository;
   let validationMock: ValidationMock;
