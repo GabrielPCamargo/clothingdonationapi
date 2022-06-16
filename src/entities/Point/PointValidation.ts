@@ -1,7 +1,7 @@
 import { IPoint } from './IPoint';
 
 export class PointValidation implements IPoint {
-  public readonly _id: string;
+  public readonly _id: string = 'teste';
   public name: string;
   public description: string;
   public coordinates: { lat: number; lng: number };

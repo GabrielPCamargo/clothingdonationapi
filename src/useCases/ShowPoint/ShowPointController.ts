@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { validate as uuidValidate, v4 } from 'uuid';
+import { validate as uuidValidate } from 'uuid';
 import { ShowPointUseCase } from './ShowPointUseCase';
 
 export class ShowPointController {

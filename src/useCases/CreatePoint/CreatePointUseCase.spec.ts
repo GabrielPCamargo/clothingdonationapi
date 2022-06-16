@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { IPoint } from '../../entities/Point/IPoint';
+import { PointValidation } from '../../entities/Point/PointValidation';
 import { IPointsRepository } from '../../repositories/IPointsRepository';
 import { CreatePointUseCase } from './CreatePointUseCase';
 
@@ -32,15 +33,31 @@ class PointsRepository implements IPointsRepository {
   }
 }
 
+class ValidationMock extends PointValidation {
+  create() {
+    return true;
+  }
+}
+
 function createSut() {
   const pointsRepositoryMock = new PointsRepository();
-  const sut = new CreatePointUseCase(pointsRepositoryMock, {});
-  return { sut, pointsRepositoryMock };
+  const validationMock = new ValidationMock();
+  const sut = new CreatePointUseCase(pointsRepositoryMock, validationMock);
+  return { sut, pointsRepositoryMock, validationMock };
 }
 
 describe('CreatePointUseCase', () => {
+  let pointsRepositoryMock: PointsRepository;
+  let validationMock: ValidationMock;
+  let sut: CreatePointUseCase;
+
+  beforeAll(() => {
+    pointsRepositoryMock = new PointsRepository();
+    validationMock = new ValidationMock();
+    sut = new CreatePointUseCase(pointsRepositoryMock, validationMock);
+  });
+
   it('should create a point', async () => {
-    const { sut, pointsRepositoryMock } = createSut();
     let error = '';
     const data = {
       name: 'testee',
@@ -58,6 +75,7 @@ describe('CreatePointUseCase', () => {
     };
 
     const pointsRepositoryMockSpy = jest.spyOn(pointsRepositoryMock, 'create');
+    const validationMockSpy = jest.spyOn(validationMock, 'validate');
 
     try {
       const response = await sut.execute(data);
@@ -66,40 +84,8 @@ describe('CreatePointUseCase', () => {
       error = err.message;
     }
 
-    expect(pointsRepositoryMockSpy).toHaveBeenCalled();
-  });
-});
-
-describe('CreatePointUseCase', () => {
-  it('should create a point', async () => {
-    const { sut, pointsRepositoryMock } = createSut();
-    const error = '';
-    const data = {
-      name: '',
-      description: 'testeset',
-      coordinates: {
-        lat: 1,
-        lng: 4,
-      },
-      user: {
-        name: 'tst565e',
-        email: 'email@gmail.com',
-      },
-      type: 'request',
-      number: '5209250920',
-    };
-
-    const pointsRepositoryMockSpy = jest.spyOn(pointsRepositoryMock, 'create');
-
-    try {
-      const response = await sut.execute(data);
-      expect(response).toBe(data);
-    } catch (err: any) {
-      expect(err.message).toContain(
-        'Name must have between 4 and 255 characters'
-      );
-    }
-
-    expect(pointsRepositoryMockSpy).not.toHaveBeenCalled();
+    expect(pointsRepositoryMockSpy).toHaveBeenCalledTimes(1);
+    expect(validationMockSpy).toHaveBeenCalledTimes(1);
+    expect(async () => await sut.execute(data)).not.toThrow();
   });
 });
