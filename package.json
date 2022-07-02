@@ -6,7 +6,8 @@
   "scripts": {
     "test": "jest",
     "build": "tsc",
-    "start": "nodemon ./src/server.ts"
+    "start": "nodemon ./src/server.ts",
+    "run": "node ./dist/server.js"
   },
   "author": "",
   "license": "ISC",

@@ -15,6 +15,8 @@ export class UserValidation implements IUser {
       throw new Error('User requires name, email, password and type');
     }
 
+    this.errors = [];
+
     if (this.name.length < 4 || this.name.length > 255) {
       this.errors.push('name must have between 4 and 255 characters');
     }

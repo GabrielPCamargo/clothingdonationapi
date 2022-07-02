@@ -23,6 +23,8 @@ export class PointValidation implements IPoint {
       );
     }
 
+    this.errors = [];
+
     if (this.name.length < 4 || this.name.length > 255) {
       this.errors.push('Name must have between 4 and 255 characters');
     }
