@@ -18,7 +18,7 @@ export class CreatePointController {
         number,
         user,
       });
-      return res.json(createdPoint);
+      return res.status(201).json(createdPoint);
     } catch (err: any) {
       return res.status(400).json({
         error: err.message,

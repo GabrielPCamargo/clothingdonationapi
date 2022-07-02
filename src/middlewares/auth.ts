@@ -6,7 +6,7 @@ import { AuthRequest } from './IAuthRequest';
 export const auth = (req: AuthRequest, res: Response, next: NextFunction) => {
   const authorization = req.headers.authorization;
   if (!authorization) {
-    res.status(400).json({ error: 'Invalid authorization' });
+    res.status(401).json({ error: 'Invalid authorization' });
     return;
   }
 
