@@ -17,7 +17,9 @@ export const auth = (req: AuthRequest, res: Response, next: NextFunction) => {
     if (!decoded) {
       return res.status(401).json({ error: 'Not authorized' });
     }
-    req.user = decoded as IUser;
+
+    const { name, email, type } = decoded as IUser;
+    req.user = { name, email, type };
     next();
   } catch (err) {
     return res.status(400).json({ error: 'Invalid authorization' });
