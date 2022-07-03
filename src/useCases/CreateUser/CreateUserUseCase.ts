@@ -10,11 +10,12 @@ export class CreateUserUseCase {
     private readonly userValidation: UserValidation
   ) {}
 
-  async execute(data: ICreateUserRequestDTO): Promise<IUser> {
+  async execute(data: ICreateUserRequestDTO): Promise<Omit<IUser, 'password'>> {
     this.userValidation.validate(data);
     const user = new User(data);
     const newUser = await this.usersRepository.create(user);
-    return newUser;
+    const { _id, name, email, type } = newUser;
+    return { _id, name, email, type };
   }
 
   /*if (user.errors.length > 0) {
